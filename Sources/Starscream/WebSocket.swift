@@ -125,7 +125,18 @@ open class WebSocket: WebSocketClient, EngineDelegate {
             self.init(request: request, engine: WSEngine(transport: FoundationTransport(), certPinner: certPinner, compressionHandler: compressionHandler))
         }
     }
-    
+
+    /// Creates a WebSocket with custom SOCKS proxy configuration
+    /// - Parameters:
+    ///   - request: The URLRequest for the WebSocket connection
+    ///   - socksProxy: SOCKS proxy configuration (host and port)
+    ///   - certPinner: Optional certificate pinning handler
+    ///   - compressionHandler: Optional compression handler
+    public convenience init(request: URLRequest, socksProxy: SOCKSProxyConfig, certPinner: CertificatePinning? = FoundationSecurity(), compressionHandler: CompressionHandler? = nil) {
+        let transport = FoundationTransport(streamConfiguration: socksProxy.streamConfiguration())
+        self.init(request: request, engine: WSEngine(transport: transport, certPinner: certPinner, compressionHandler: compressionHandler))
+    }
+
     public func connect() {
         engine.register(delegate: self)
         engine.start(request: request)
