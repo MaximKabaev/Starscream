@@ -117,9 +117,9 @@ public protocol HTTPServerHandler {
 }
 
 public struct URLParts {
-    public let port: Int
-    public let host: String
-    public let isTLS: Bool
+    let port: Int
+    let host: String
+    let isTLS: Bool
 }
 
 public extension URL {
